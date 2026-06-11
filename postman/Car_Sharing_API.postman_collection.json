@@ -534,7 +534,7 @@
       "name": "Payments",
       "item": [
         {
-          "name": "/payments/",
+          "name": "/payments",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -551,7 +551,7 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/payments/",
+              "raw": "{{baseUrl}}/payments",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -564,7 +564,7 @@
           "response": []
         },
         {
-          "name": "/payments/",
+          "name": "/payments",
           "request": {
             "method": "POST",
             "header": [],
@@ -578,7 +578,7 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/payments/",
+              "raw": "{{baseUrl}}/payments",
               "host": [
                 "{{baseUrl}}"
               ],

@@ -247,16 +247,16 @@ POST /rentals/{id}/return
 - Return rental
 ---
 ### Payments
-POST /payments/
+POST /payments
 - Creating payment session
 
-GET /payments/
+GET /payments
 - Get user payments (Manager may choose specific user)
 
-GET /payments/success/
+GET /payments/success
 - Proceed success payment
 
-GET /payments/cancel/
+GET /payments/cancel
 - Cancel payment session
 
 POST /payments/{id}/renew
@@ -283,29 +283,29 @@ The application uses role-based access control (RBAC) with two roles:
 
 ### 🌐 Public Endpoints (No Authentication Required)
 
-| Endpoint           | Method | Description              |
-|--------------------|--------|--------------------------|
+| Endpoint          | Method | Description              |
+|-------------------|--------|--------------------------|
 | /auth/registration | POST   | Register new user        |
-| /auth/login        | POST   | Authenticate user (JWT)  |
-| /payments/success/ | GET    | Handle successful payment |
-| /payments/cancel/  | GET    | Handle cancelled payment |
+| /auth/login       | POST   | Authenticate user (JWT)  |
+| /payments/success | GET    | Handle successful payment |
+| /payments/cancel  | GET    | Handle cancelled payment |
 
 ---
 
 ### 👤 USER Permissions
 
-| Resource  | Endpoint             | Method | Description                  |
-|----------|----------------------|--------|------------------------------|
-| Cars     | /cars                | GET    | View all cars                |
-| Cars     | /cars/{id}           | GET    | View car details             |
-| Users    | /users/me            | GET    | View own profile             |
-| Users    | /users/me            | PATCH  | Update own profile           |
-| Rentals  | /rentals             | POST   | Create rental                |
-| Rentals  | /rentals             | GET    | View own rentals             |
-| Rentals  | /rentals/{id}        | GET    | View rental details (own)    |
+| Resource  | Endpoint           | Method | Description                  |
+|----------|--------------------|--------|------------------------------|
+| Cars     | /cars              | GET    | View all cars                |
+| Cars     | /cars/{id}         | GET    | View car details             |
+| Users    | /users/me          | GET    | View own profile             |
+| Users    | /users/me          | PATCH  | Update own profile           |
+| Rentals  | /rentals           | POST   | Create rental                |
+| Rentals  | /rentals           | GET    | View own rentals             |
+| Rentals  | /rentals/{id}      | GET    | View rental details (own)    |
 | Rentals  | /rentals/{id}/return | POST   | Return rental                |
-| Payments | /payments/           | POST   | Create payment session       |
-| Payments | /payments/           | GET    | View own payments            |
+| Payments | /payments          | POST   | Create payment session       |
+| Payments | /payments          | GET    | View own payments            |
 | Payments | /payments/{id}/renew | POST   | Renew payment session        |
 
 ---

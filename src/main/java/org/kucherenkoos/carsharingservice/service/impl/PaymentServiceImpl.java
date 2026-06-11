@@ -210,7 +210,7 @@ public class PaymentServiceImpl implements PaymentService {
         return Payment.PaymentType.PAYMENT;
     }
 
-    private BigDecimal calculateMoneyToPay(Rental rental, Payment.PaymentType type) {
+    protected BigDecimal calculateMoneyToPay(Rental rental, Payment.PaymentType type) {
         BigDecimal dailyFee = rental.getCar().getDailyFee();
 
         LocalDate startPlan = rental.getRentalDate();

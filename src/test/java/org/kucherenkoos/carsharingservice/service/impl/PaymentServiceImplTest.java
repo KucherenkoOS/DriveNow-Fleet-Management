@@ -342,4 +342,108 @@ class PaymentServiceImplTest {
         assertEquals(0, expectedAmount.compareTo(capturedAmount),
                 "The calculated fine amount should exactly match the expected formula result");
     }
+
+    // ==========================================
+    // ТЕСТИ ДЛЯ МЕТОДУ calculateMoneyToPay
+    // ==========================================
+
+    @Test
+    @DisplayName("Calculate payment: TYPE=PAYMENT, car returned earlier than planned")
+    void calculateMoneyToPay_PaymentTypeEarlyReturn_CalculatesCorrectly() {
+        // Given
+        rental.setRentalDate(LocalDate.of(2026, 6, 1));
+        rental.setReturnDate(LocalDate.of(2026, 6, 6));
+        rental.setActualReturnDate(LocalDate.of(2026, 6, 3));
+
+        car.setDailyFee(BigDecimal.valueOf(100));
+
+        // When
+        BigDecimal result = paymentService.calculateMoneyToPay(rental, Payment.PaymentType.PAYMENT);
+
+        // Then
+        assertEquals(0, BigDecimal.valueOf(300).compareTo(result), "Should charge only for actual days if returned early");
+    }
+
+    @Test
+    @DisplayName("Calculate payment: TYPE=PAYMENT, car returned on time or later")
+    void calculateMoneyToPay_PaymentTypeNormal_CalculatesCorrectly() {
+        // Given
+        rental.setRentalDate(LocalDate.of(2026, 6, 1));
+        rental.setReturnDate(LocalDate.of(2026, 6, 4));
+        rental.setActualReturnDate(LocalDate.of(2026, 6, 6));
+
+        car.setDailyFee(BigDecimal.valueOf(100));
+
+        // When
+        BigDecimal result = paymentService.calculateMoneyToPay(rental, Payment.PaymentType.PAYMENT);
+
+        // Then
+        assertEquals(0, BigDecimal.valueOf(400).compareTo(result), "Should charge only for planned days for ordinary PAYMENT");
+    }
+
+    @Test
+    @DisplayName("Calculate fine: TYPE=FINE, actual return date is null throws Exception")
+    void calculateMoneyToPay_FineTypeActualReturnNull_ThrowsIllegalStateException() {
+        // Given
+        rental.setActualReturnDate(null);
+
+        // When & Then
+        Exception exception = assertThrows(IllegalStateException.class, () ->
+                paymentService.calculateMoneyToPay(rental, Payment.PaymentType.FINE)
+        );
+
+        assertEquals("Cannot calculate fine: actual return date is null", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Calculate fine: TYPE=FINE, returned on time (no overdue)")
+    void calculateMoneyToPay_FineTypeNoOverdue_ReturnsZero() {
+        // Given
+        rental.setRentalDate(LocalDate.of(2026, 6, 1));
+        rental.setReturnDate(LocalDate.of(2026, 6, 5));
+        rental.setActualReturnDate(LocalDate.of(2026, 6, 5)); // Вчасно
+
+        // When
+        BigDecimal result = paymentService.calculateMoneyToPay(rental, Payment.PaymentType.FINE);
+
+        // Then
+        assertEquals(0, BigDecimal.ZERO.compareTo(result), "Fine should be zero if there is no overdue");
+    }
+
+    @Test
+    @DisplayName("Calculate fine: TYPE=FINE, calculation with overdue and multiplier")
+    void calculateMoneyToPay_FineTypeWithOverdue_CalculatesCorrectly() {
+        // Given
+
+        rental.setRentalDate(LocalDate.of(2026, 6, 1));
+        rental.setReturnDate(LocalDate.of(2026, 6, 5));
+        rental.setActualReturnDate(LocalDate.of(2026, 6, 7));
+
+        car.setDailyFee(BigDecimal.valueOf(100));
+
+        BigDecimal fineMultiplier = BigDecimal.valueOf(1.5);
+        BigDecimal expected = car.getDailyFee().multiply(
+                BigDecimal.valueOf(4).add(BigDecimal.valueOf(2).multiply(fineMultiplier))
+        );
+
+        // When
+        BigDecimal result = paymentService.calculateMoneyToPay(rental, Payment.PaymentType.FINE);
+
+        // Then
+        assertEquals(0, expected.compareTo(result), "Fine calculation formula should match business rules");
+    }
+
+    @Test
+    @DisplayName("Calculate payment: Unknown payment type throws Exception")
+    void calculateMoneyToPay_UnknownType_ThrowsIllegalArgumentException() {
+        // Given
+        rental.setActualReturnDate(LocalDate.now());
+
+        // When & Then
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                paymentService.calculateMoneyToPay(rental, null)
+        );
+
+        assertEquals("Unknown payment type: null", exception.getMessage());
+    }
 }
