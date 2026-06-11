@@ -28,7 +28,6 @@ public class CreateCarRequestDto {
     private CarType carType;
 
     @Schema(description = "Number of available cars", example = "3")
-    @NotNull
     private int inventory;
 
     @Schema(description = "Daily fee for a car", example = "299.99")

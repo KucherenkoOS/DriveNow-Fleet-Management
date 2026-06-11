@@ -44,8 +44,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/payments/success/",
-                                "/payments/cancel/"
+                                "/payments/success",
+                                "/payments/cancel"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

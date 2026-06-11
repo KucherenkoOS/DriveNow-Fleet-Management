@@ -28,14 +28,14 @@ public class PaymentController {
 
     @Operation(summary = "Creating payment session")
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/")
+    @PostMapping
     public PaymentResponseDto createPaymentSession(@RequestBody PaymentRequestDto requestDto) {
         return paymentService.createPaymentSession(requestDto);
     }
 
     @Operation(summary = "Get user payments (Manager may choose specific user")
     @PreAuthorize("hasRole('USER') or hasRole('MANAGER')")
-    @GetMapping("/")
+    @GetMapping
     public List<PaymentResponseDto> getPayments(
             @RequestParam(value = "user_id", required = false) Long userId,
             @AuthenticationPrincipal User currentUser) {
@@ -44,14 +44,14 @@ public class PaymentController {
     }
 
     @Operation(summary = "Proceed success payment")
-    @GetMapping("/success/")
+    @GetMapping("/success")
     public String handleSuccessPayment(@RequestParam("session_id") String sessionId) {
         paymentService.processSuccessPayment(sessionId);
         return "Payment successful!";
     }
 
     @Operation(summary = "Cancel payment session")
-    @GetMapping("/cancel/")
+    @GetMapping("/cancel")
     public String handleCancelPayment(@RequestParam("session_id") String sessionId) {
         paymentService.processCancelPayment(sessionId);
         return "Payment paused. "
