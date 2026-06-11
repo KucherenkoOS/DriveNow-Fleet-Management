@@ -343,10 +343,6 @@ class PaymentServiceImplTest {
                 "The calculated fine amount should exactly match the expected formula result");
     }
 
-    // ==========================================
-    // ТЕСТИ ДЛЯ МЕТОДУ calculateMoneyToPay
-    // ==========================================
-
     @Test
     @DisplayName("Calculate payment: TYPE=PAYMENT, car returned earlier than planned")
     void calculateMoneyToPay_PaymentTypeEarlyReturn_CalculatesCorrectly() {
@@ -401,7 +397,7 @@ class PaymentServiceImplTest {
         // Given
         rental.setRentalDate(LocalDate.of(2026, 6, 1));
         rental.setReturnDate(LocalDate.of(2026, 6, 5));
-        rental.setActualReturnDate(LocalDate.of(2026, 6, 5)); // Вчасно
+        rental.setActualReturnDate(LocalDate.of(2026, 6, 5));
 
         // When
         BigDecimal result = paymentService.calculateMoneyToPay(rental, Payment.PaymentType.FINE);
