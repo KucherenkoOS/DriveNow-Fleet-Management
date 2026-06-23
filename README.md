@@ -1,7 +1,7 @@
 # 🚗 DriveNow Fleet Management
 
 ## 📌 Introduction
-Car Sharing Service is a RESTful API for managing a car rental platform.  
+DriveNow Fleet Management is a RESTful API for managing a car rental platform.  
 It allows users to browse available cars, create rentals, and complete payments online.
 
 The project demonstrates backend development skills using the Spring Boot ecosystem, clean architecture principles, and integration with external services.
